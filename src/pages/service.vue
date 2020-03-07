@@ -1,33 +1,33 @@
 <template>
   <div>
-    <div class="back-button">
-      <span @click="goBack">Back</span>
-    </div>
-    <div class="form-title">
-      <span>{{ service.name }}</span>
-      <span class="line"></span>
-    </div>
-    <div class="form-column">
-      <span>Persoana de contact</span>
-      <div class="contact-person">
-        <div>
-          <span>Nume</span>
-          <div><input type="text" v-model="firstname" /></div>
-        </div>
-        <div>
-          <span>Prenume</span>
-          <div><input type="text" v-model="lastname" /></div>
+    <form @submit.prevent="proceed">
+      <div class="back-button">
+        <span @click="goBack">Back</span>
+      </div>
+      <div class="form-title">
+        <span>{{ service.name }}</span>
+        <span class="line"></span>
+      </div>
+      <div class="form-column">
+        <span>Persoana de contact</span>
+        <div class="contact-person">
+          <div>
+            <span>Nume</span>
+            <div><input type="text" v-model="firstname" required /></div>
+          </div>
+          <div>
+            <span>Prenume</span>
+            <div><input type="text" v-model="lastname" required /></div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="form-column">
-      <span>Descriere cerere</span>
-      <div>
-        <textarea cols="20" rows="3" v-model="description" />
+      <div class="form-column">
+        <span>Descriere cerere</span>
+        <div>
+          <textarea cols="20" rows="3" v-model="description" required />
+        </div>
       </div>
-    </div>
-    <div class="form-column">
-      <form>
+      <div class="form-column">
         <span>Adresă</span>
         <div class="street">
           <span>Stradă</span>
@@ -38,25 +38,34 @@
         <div class="phoneNumber">
           <span>Număr de telefon</span>
           <div>
-            <input type="number" v-model="phoneNumber" />
+            <input type="number" v-model="phoneNumber" required />
           </div>
         </div>
         <div class="address">
-          <div class="address-number">
-            <span>Număr</span>
-            <div><input type="number" v-model="houseNumber" /></div>
-          </div>
           <div class="address-block">
             <span>Bloc</span>
-            <div><input type="text" v-model="blockNumber" /></div>
+            <div><input type="text" v-model="blockNumber" required /></div>
           </div>
-          <div class="address-apartment">
+          <div class="address-number">
+            <span>Număr</span>
+            <div><input type="number" v-model="houseNumber" required /></div>
+          </div>
+          <div class="addr=ess-apartment">
             <span>Apartament</span>
-            <div><input type="number" v-model="apartmentNumber" /></div>
+            <div><input type="number" v-model="apartmentNumber" required /></div>
           </div>
         </div>
-      </form>
-    </div>
+      </div>
+      <div class="form-column">
+        <span>Recompensă</span>
+        <div class="price-form">
+          <div><input type="number" v-model="offer" required /> RON</div>
+        </div>
+      </div>
+      <div class="submit-button">
+        <input type="submit" value="Continuă" />
+      </div>
+    </form>
   </div>
 </template>
 
@@ -76,7 +85,8 @@ export default {
       lastname: this.$store.state.user.last_name,
       houseNumber: "",
       blockNumber: "",
-      apartmentNumber: ""
+      apartmentNumber: "",
+      offer: ""
     };
   },
   methods: {
@@ -84,7 +94,7 @@ export default {
       try {
         this.service = (await axios.post("http://falticeniorderapp.ddns.net:3030/getService", { service: this.serviceID }, { headers: { auth: this.$store.state.token } })).data.data;
       } catch (err) {
-        alert("A aparut o eroare, te rog incearca mai tarziu\n Date tehnice: " + err);
+        if (err) alert("A aparut o eroare, te rog incearca mai tarziu\n Date tehnice: " + err);
       }
     },
     async getStreets() {
@@ -92,12 +102,19 @@ export default {
         this.streets = (await axios.post("http://falticeniorderapp.ddns.net:3030/getStreets", {}, { headers: { auth: this.$store.state.token } })).data.data;
         this.chosenStreet = this.streets[0].name;
       } catch (err) {
-        alert("A aparut o eroare, te rog incearca mai tarziu\n Date tehnice: " + err);
+        if (err) alert("A aparut o eroare, te rog incearca mai tarziu\n Date tehnice: " + err);
       }
     },
     async goBack() {
       try {
         await this.$router.push("/search");
+      } catch (err) {
+        if (err) alert("A aparut o eroare, te rog incearca mai tarziu\n Date tehnice: " + err);
+      }
+    },
+    async proceed() {
+      try {
+        let data = await axios.post("http://falticeniorderapp.ddns.net:3030/createOrder", { service: this.serviceID, street: this.chosenStreet, description: this.description, phone: this.phone, firstname: this.firstname, lastname: this.lastname, houseNumber: this.houseNumber, blockNumber: this.blockNumber, apartmentNumber: this.apartmentNumber, offer: this.offer }, { headers: { auth: this.$store.state.token } });
       } catch (err) {
         if (err) alert("A aparut o eroare, te rog incearca mai tarziu\n Date tehnice: " + err);
       }
@@ -167,15 +184,15 @@ export default {
 }
 .address-number {
   width: 50px;
-  margin-right: 10px;
+  margin-left: 10px;
+  margin-right: 20px;
 }
 .address-block {
   width: 50px;
-  margin-left: 10px;
   margin-right: 10px;
 }
 .address-apartment {
-  margin-left: 10px;
+  margin-left: 15px;
   margin-right: 10px;
   width: 50px;
 }
@@ -194,11 +211,30 @@ input {
 }
 .contact-person,
 .phoneNumber,
-.street {
+.street,
+.price-form {
   margin-top: 10px;
 }
 .contact-person > div > div > input {
   width: 150px;
   margin-right: 20px;
+}
+.price-form > div > input {
+  width: 70px;
+}
+.submit-button {
+  text-align: center;
+  padding-top: 100px;
+}
+
+.submit-button > input {
+  height: 40px;
+  width: 60%;
+  border: 0;
+  border-radius: 15px;
+  background-color: #312da4;
+  color: #fff;
+  font-size: 13px;
+  font-family: "Roboto", sans-serif;
 }
 </style>
