@@ -5,7 +5,7 @@
     </div>
     <div v-else>
       <router-view />
-      <tabs v-if="$store.state.token && $store.state.user.active" />
+      <tabs v-if="$store.state.token && $store.state.user.active && this.$route.name != 'ServicePage'" />
     </div>
   </div>
 </template>
@@ -28,7 +28,7 @@ export default {
   },
   async created() {
     try {
-      // hide splash screen after 3000 ms (3 sec)
+      // show splash screen after 3000 ms (3 sec)
       setTimeout(() => (this.active = !this.active), 3000);
 
       // load user data into store if state have a token

@@ -85,17 +85,17 @@ export default {
   color: #585858;
   margin-top: 12px;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .service-description {
-  line-height: 10px;
+  line-height: 13px;
 }
 
 .service-description > span {
   color: #727272;
   font-weight: 300;
-  font-size: 9px;
+  font-size: 11px;
   margin-left: 5px;
 }
 .service-button {
@@ -104,7 +104,9 @@ export default {
   margin-top: 10px;
 }
 .service-button > span {
-  font-size: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #464646;
 }
 
 .section-title {

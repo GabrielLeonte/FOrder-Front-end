@@ -48,7 +48,7 @@
   margin-left: 20px;
   margin-top: 12px;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .no-order {
