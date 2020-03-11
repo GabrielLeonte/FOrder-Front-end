@@ -5,7 +5,7 @@
     </div>
     <div v-else>
       <router-view />
-      <tabs v-if="$store.state.token && $store.state.user.active && this.$route.name != 'ServicePage'" />
+      <tabs v-if="$store.state.token && $store.state.user.active && (this.$route.name != 'ServicePage') && (this.$route.name != 'successOrderPage')" />
     </div>
   </div>
 </template>

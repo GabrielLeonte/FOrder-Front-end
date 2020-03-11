@@ -10,8 +10,7 @@ import SearchPage from "./pages/search";
 import ServicePage from "./pages/service";
 import OpenPage from "./pages/open";
 import ProfilePage from "./pages/profile";
-
-
+import successOrderPage from "./pages/successOrder";
 
 Vue.use(Router);
 
@@ -84,6 +83,15 @@ const router = new Router({
       path: "/profile",
       name: "ProfilePage",
       component: ProfilePage,
+      beforeEnter: (to, from, next) => {
+        if (!store.state.user) return next("/login");
+        else return next();
+      }
+    },
+    {
+      path: "/successOrder",
+      name: "successOrderPage",
+      component: successOrderPage,
       beforeEnter: (to, from, next) => {
         if (!store.state.user) return next("/login");
         else return next();

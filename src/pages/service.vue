@@ -38,21 +38,21 @@
         <div class="phoneNumber">
           <span>Număr de telefon</span>
           <div>
-            <input type="number" v-model="phoneNumber" required />
+            <input type="number" v-model="phone" required />
           </div>
         </div>
         <div class="address">
           <div class="address-block">
             <span>Bloc</span>
-            <div><input type="text" v-model="blockNumber" required /></div>
+            <div><input type="text" v-model="block_number" required /></div>
           </div>
           <div class="address-number">
             <span>Număr</span>
-            <div><input type="number" v-model="houseNumber" required /></div>
+            <div><input type="number" v-model="house_number" required /></div>
           </div>
           <div class="addr=ess-apartment">
             <span>Apartament</span>
-            <div><input type="number" v-model="apartmentNumber" required /></div>
+            <div><input type="number" v-model="apartment_number" required /></div>
           </div>
         </div>
       </div>
@@ -80,12 +80,12 @@ export default {
       streets: "",
       chosenStreet: "",
       description: "",
-      phoneNumber: Number(`40${this.$store.state.user.phone}`),
+      phone: Number(`40${this.$store.state.user.phone}`),
       firstname: this.$store.state.user.first_name,
       lastname: this.$store.state.user.last_name,
-      houseNumber: "",
-      blockNumber: "",
-      apartmentNumber: "",
+      house_number: "",
+      block_number: "",
+      apartment_number: "",
       offer: ""
     };
   },
@@ -114,7 +114,22 @@ export default {
     },
     async proceed() {
       try {
-        let data = await axios.post("http://falticeniorderapp.ddns.net:3030/createOrder", { service: this.serviceID, street: this.chosenStreet, description: this.description, phone: this.phone, firstname: this.firstname, lastname: this.lastname, houseNumber: this.houseNumber, blockNumber: this.blockNumber, apartmentNumber: this.apartmentNumber, offer: this.offer }, { headers: { auth: this.$store.state.token } });
+        let data = await axios.post(
+          "http://falticeniorderapp.ddns.net:3030/createOrder",
+          {
+            serviceID: Number(this.serviceID),
+            street: this.chosenStreet,
+            description: this.description,
+            contact_phone: Number(this.phone),
+            contact_firstname: this.firstname,
+            contact_lastname: this.lastname,
+            house_number: Number(this.house_number),
+            block_number: this.block_number,
+            apartment_number: Number(this.apartment_number),
+            offer: Number(this.offer)
+          },
+          { headers: { auth: this.$store.state.token } }
+        );
       } catch (err) {
         if (err) alert("A aparut o eroare, te rog incearca mai tarziu\n Date tehnice: " + err);
       }
