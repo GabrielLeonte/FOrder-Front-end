@@ -114,6 +114,7 @@ export default {
     },
     async proceed() {
       try {
+        // get post request data
         let data = await axios.post(
           "http://falticeniorderapp.ddns.net:3030/createOrder",
           {
@@ -130,6 +131,9 @@ export default {
           },
           { headers: { auth: this.$store.state.token } }
         );
+
+        // push to success page
+        await this.$router.push(`/successOrder/${data.data.id}`);
       } catch (err) {
         if (err) alert("A aparut o eroare, te rog incearca mai tarziu\n Date tehnice: " + err);
       }

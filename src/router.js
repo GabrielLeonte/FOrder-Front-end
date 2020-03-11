@@ -89,7 +89,7 @@ const router = new Router({
       }
     },
     {
-      path: "/successOrder",
+      path: "/successOrder/:ID",
       name: "successOrderPage",
       component: successOrderPage,
       beforeEnter: (to, from, next) => {
