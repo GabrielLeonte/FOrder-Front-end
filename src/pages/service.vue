@@ -135,7 +135,9 @@ export default {
         // push to success page
         await this.$router.push(`/successOrder/${data.data.id}`);
       } catch (err) {
-        if (err) alert("A aparut o eroare, te rog incearca mai tarziu\n Date tehnice: " + err);
+        if (err)
+          if (err.response.data.message === "Limita de cereri maxime a fost atinsă! (2 cereri)") alert(err.response.data.message);
+          else alert("A aparut o eroare, te rog incearca mai tarziu\nDate tehnice: " + err.response.data.message);
       }
     }
   },

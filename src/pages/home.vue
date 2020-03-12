@@ -7,14 +7,19 @@
     <div class="active-orders">
       <span>Comezi active</span>
     </div>
-    <div v-if="orders" class="max">
+    <div v-if="orders.length > 0" class="max">
       <div class="columns is-multiline is-mobile max" v-for="(item, index) in orders" :key="index">
         <div class="column is-full order">
           <div class="service-name">
-            <span>{{ item.service_name }}</span>
+            <span>{{ item.service_name }} </span>
           </div>
           <div class="service-description">
-            <span class="service-description-text">{{ item.description }}</span>
+            <span class="status">&#8226; Status: {{ item.status }}</span> <br />
+            <span class="service-description-text">&#8226; {{ item.description }}</span>
+          </div>
+          <div class="service-footer">
+            <span class="price">&#8226; Garantez: {{ item.budget }} RON</span>
+            <span class="date">{{ new Date(item.timestamp).toUTCString() }}</span>
           </div>
         </div>
       </div>
@@ -37,7 +42,7 @@ export default {
       try {
         this.orders = (await axios.post("http://falticeniorderapp.ddns.net:3030/getOrders", {}, { headers: { auth: this.$store.state.token } })).data.data;
       } catch (err) {
-        alert("A aparut o eroare la incarcarea comenzilor active, te rog incearca mai tarziu\n Date tehnice: " + err.message);
+        alert("A aparut o eroare la incarcarea comenzilor active, te rog incearca mai tarziu\n Date tehnice: " + err.response.data);
       }
     }
   },
@@ -57,28 +62,24 @@ export default {
   margin: 0 auto;
   font-family: "Roboto", sans-serif;
 }
-
 .section-title {
   font-size: 25px;
   color: #414141;
   font-weight: 600;
   margin-left: 20px;
 }
-
 .line {
   display: block;
   width: 100%;
   margin-top: 5px;
   border-top: solid #e18080e7 0.5px;
 }
-
 .svg {
   width: 70%;
   position: absolute;
   bottom: 10vh;
   right: 1vh;
 }
-
 .active-orders {
   color: #585858;
   margin-left: 20px;
@@ -86,7 +87,6 @@ export default {
   font-weight: 600;
   font-size: 15px;
 }
-
 .no-order {
   margin-top: 20px;
   text-align: center;
@@ -122,5 +122,20 @@ export default {
 .service-description-text {
   display: block;
   margin-left: 20px;
+}
+.service-footer {
+  margin-left: 12px;
+  text-align: left;
+}
+.service-footer > .price {
+  font-weight: 700;
+  width: 100%;
+}
+.service-footer > .date {
+  float: right;
+}
+.service-description > .status {
+  font-weight: 700;
+  margin-left: 12px;
 }
 </style>
