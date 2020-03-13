@@ -11,7 +11,7 @@ import ServicePage from "./pages/service";
 import OpenPage from "./pages/open";
 import ProfilePage from "./pages/profile";
 import successOrderPage from "./pages/successOrder";
-import testPage from "./pages/maptest.vue";
+import detailsPage from "./pages/details";
 
 Vue.use(Router);
 
@@ -99,9 +99,13 @@ const router = new Router({
       }
     },
     {
-      path: "/test",
-      name: "testPage",
-      component: testPage
+      path: "/details/:ID",
+      name: "detailsPage",
+      component: detailsPage,
+      beforeEnter: (to, from, next) => {
+        if (!store.state.user) return next("/login");
+        else return next();
+      }
     }
   ]
 });

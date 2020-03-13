@@ -15,8 +15,8 @@
           </div>
           <div class="service-description">
             <span class="service-description-text">&#8226; {{ item.description }}</span>
+            <span class="location">&#8226; Locatie: {{ item.street }}, Numarul: {{ item.address_house_number }}</span> <br />
             <span class="price">&#8226; Ofer: {{ item.budget }} RON</span>
-            <span class="price">&#8226; Locatie: Strada {{ item.street }} Numarul: {{ item.address_house_number }}</span>
           </div>
           <div class="service-footer"></div>
         </div>
@@ -126,9 +126,8 @@ export default {
   text-align: left;
 }
 .service-description > .price {
+  margin-left: 10px;
   font-weight: 700;
-  margin-left: 20px;
-
   width: 100%;
 }
 .service-footer > .date {
@@ -137,5 +136,8 @@ export default {
 .service-description > .status {
   font-weight: 700;
   margin-left: 12px;
+}
+.service-description > .location {
+  margin-left: 20px;
 }
 </style>
