@@ -9,7 +9,6 @@ export default new Vuex.Store({
   state: {
     token: localStorage.getItem("token") || "",
     user: {},
-    cart: [],
     location: {},
     confirmationCode: ""
   },
